@@ -1,0 +1,34 @@
+<!--
+    Custom Wazuh Detection Rules
+    SOC Home Lab — Privilege Escalation Scenario
+    
+    These rules were written to detect the specific attack chain
+    demonstrated in this lab at Critical severity (Level 15).
+    
+    Deploy to: /var/ossec/etc/rules/local_rules.xml
+    Restart after deploying: sudo systemctl restart wazuh-manager
+-->
+
+<group name="local,">
+
+  <rule id="100002" level="15">
+    <if_sid>5760</if_sid>
+    <description>SSH brute force attack detected - multiple authentication failures from same source</description>
+    <group>authentication_failures,attack,</group>
+  </rule>
+
+  <rule id="100003" level="15">
+    <if_sid>5402</if_sid>
+    <match>bash</match>
+    <description>Suspicious SUID bash execution - possible privilege escalation attempt</description>
+    <group>attack,privesc,</group>
+  </rule>
+
+  <rule id="100004" level="15">
+    <if_sid>553</if_sid>
+    <match>crontab</match>
+    <description>Crontab modified - possible persistence mechanism being planted</description>
+    <group>attack,persistence,</group>
+  </rule>
+
+</group>
